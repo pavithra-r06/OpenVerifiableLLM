@@ -141,7 +141,7 @@ class AnchorHead(unittest.TestCase):
         self.assertNotIn("chain head MATCH", out.getvalue())
         self.assertIn("verify PASS", out.getvalue())
         record = json.loads(
-            (self.run / "verifications.jsonl").read_text().splitlines()[-1]
+            (self.run / "local-verifications.jsonl").read_text().splitlines()[-1]
         )
         self.assertEqual(record["result"], "PASS")
 
@@ -193,7 +193,7 @@ class AnchorHead(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             ovl.cmd_verify(args(self.run))
         record = json.loads(
-            (self.run / "verifications.jsonl").read_text().splitlines()[-1]
+            (self.run / "local-verifications.jsonl").read_text().splitlines()[-1]
         )
         self.assertEqual(record["checks"][0]["anchor"], str(self.run / "anchor.json"))
         self.assertTrue(record["checks"][0]["match"])
@@ -274,7 +274,7 @@ class AnchorTimestamps(unittest.TestCase):
             self.assertEqual(c.args[2][0], "-data")
         self.assertIn("anchor timestamp digicert: OK", out)
         record = json.loads(
-            (self.run / "verifications.jsonl").read_text().splitlines()[-1]
+            (self.run / "local-verifications.jsonl").read_text().splitlines()[-1]
         )
         self.assertEqual(set(record["checks"][0]["timestamps"]), set(ovl.stamp.TSA))
 
